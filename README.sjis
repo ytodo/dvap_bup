@@ -1,0 +1,126 @@
+本プログラムは、ノードアダプターもしくはDVAP Dongleを使用してアクセスポイントを作るものです。
+
+・パッケージからインストールする場合
+ルート権限で
+
+cd /etc/apt/sources.list.d
+wget jarl.list
+
+を実行後
+
+apt-get update
+apt-get install dv-ap
+
+を実行してください。なお、途中でインストールするかどうか聞いてきますので y を返してください。
+
+実行時に必要な設定ファイル等は、/usr/share/doc/dv-ap にあります。この中の　99-dvap.rules を 
+/etc/udev/rules.d/ に置いてください。また、dv_ap.conf.node もしくは dv_ap.conf.dvap を使用アダ
+プターに合わせて、dv\ap.conf に変更後 /opt/dv_ap/etc/  においてください。
+
+この内容の詳細は、下記を参照してください。
+
+・ソースからインストールする場合
+最新のソースが osnd.net に置いてあります。git での管理ですので、下記URL
+
+https://ja.osdn.net/projects/dv-ap/
+
+の、ソースコードからダウンロードしてください。
+
+プログラムのコンパイルに先立ち　automake  をインストールする必要があります。
+
+apt-get install automake
+
+を実行してください。その後
+
+./configure
+
+を実行してください。その後
+
+make
+
+を実行してください。
+
+また、本プログラムに対してポート40000のudpポートを開ける必要があります。最近のルーターが
+upnpをサポートしていることが多いため、本プログラムでは、udpnを使用してルーターを自動で設定
+するようにしてあります。
+
+DVAP Dongleに対して、usbケーブルを抜き差ししても使えるようにするため、デバイル名を　
+/dev/dvap で使用するようにしてあります。このため以下のファイルを /etc/udev/rules.d に　
+ファイル名　99-dvap.rules としておいてください。
+
+#
+#       /etc/udev/rules.d/99-dvap.rules
+#
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="dvap", MODE="0666"
+
+置い後、再起動してください。lsusbで実行して、VIDとPIDが 0403 と 6001 になていることを確認して上記
+ファイルを作成して下さい。もし違っている場・№ﾍ、そのVIP,PIDに合わせてください。
+
+
+・設定ファイル
+
+実行時の設定ファイルを　/opt/dv_ap/etc/ に　ファイル名　dv_ap.conf として置いてください。
+
+
+ノードアダプターを使用される場合は。
+
+#
+#       /opt/dv_ap/etc/dv_ap.conf
+#
+TRUST_SERVER=trust.d-star.info
+NODE_CALL=7M3TJZ C
+GATEWAY_CALL=7M3TJZ C
+DEBUG=1
+
+として、DVAP Dongleを使用される場合は
+
+#
+#       /opt/dv_ap/etc/dv_ap.conf
+#
+TRUST_SERVER=trust.d-star.info
+DVAP_CALL=7M3TJZ C
+GATEWAY_CALL=7M3TJZ C
+DEBUG=1
+
+として置いてください。GATEWAY_CALLとNODE_CALLもしくはDVAP_CALLは現時点では同じものを
+指定して下さい。また、ノードアダプターとDVAPDongleの同時使用はテストしていませんので、使用
+しないでください。TRUST_SERVERは上記の例のように設定してください。変更しないでください。
+
+なお、ポート30000のtcpおよびポーt30001のudpに関しては、通常はポートを開く必要はないのです
+が、正常に動作しない場合は、ルーターのポートを開いてみてください。
+
+upnpを使用しない場合は
+
+UPNP=0
+
+を追加してください。WiFiを使用される場合は
+
+NIC=ｗぁん０
+
+を追加してください。
+
+また、DVAP Dongle　の周波数を設定する場合は
+
+DVAP_FREQUENCY=438010000
+
+送受信を違えてスプリットで使用する場合は
+
+DVAP_TX_FREQUENCY=438010000
+DVAP_RX_FREQUENCY=438010000
+
+のように指定します。周波数は、Hzで指定します。
+
+キャリブレーションを背呈する場合は、値を下記のように指定します。
+DVAP\CALIBRATION=100
+値は、Hzです。なお値は　	-2000 から　2000 の間です。
+
+スケルチの値は
+
+DVAP_SQUELCH=-90
+
+のように指定します。値は　-45 から -128　の間です。
+
+
+
+
+

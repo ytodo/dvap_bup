@@ -1,0 +1,12 @@
+You must create the following files on /etc/udev/rules.d/
+
+file name is 99-serial.rules.
+
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6001", SYMLINK+="dvap", MODE="0666"
+
+You must install miniupnpc.
+
+apt-get install miniupnpc
+
+
+
