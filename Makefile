@@ -6,7 +6,7 @@
 
 # Program Name and Object file names
 bin_PROGRAMS    = dv_ap
-dv_ap_OBJECTS   = main.o aprs2dstar.o aprs.o beacon.o crc.o dvap.o \
+dv_ap_OBJECTS   = aprs2dstar.o aprs.o beacon.o crc.o dvap.o \
                   dv_utils.o echo_server.o from_inet.o from_node.o \
                   gps_a.o gps.o handler.o httpd_srv.o IDxxPlus.o init.o \
                   main.o node_usb_init.o pass_send.o print_PICinfo.o \
@@ -34,7 +34,7 @@ clean   :
 	$(RM) $(bin_PROGRAMS) $(dv_ap_OBJECTS)
 
 # Dependency of Header Files
-main.o          : dv_ap.h
+aprs2dstar.o	: dv_ap.h
 aprs.o          : dv_ap.h
 beacon.o        : dv_ap.h
 crc.o           : crc.h
